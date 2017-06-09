@@ -3,7 +3,7 @@ Consio is a console library for Tcl/Tk implementing some basic functionality for
 
 ### Latest Binaries
 
-* https://github.com/mattijk/consio/releases/download/0.2/Consio.zip
+* [Consio version 0.2 for Tcl/Tk 8.4](https://github.com/mattijk/consio/releases/download/0.2/Consio.zip)
 
 
 #### INFORMATION
