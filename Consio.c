@@ -1,14 +1,15 @@
 /*
  * Title:   Consio - Windows console library
- * Author:  Matti J. Kärki
- * Date:    2005-10-12
- * Version: 0.2
+ * Author:  Matti J. KÃ¤rki
+ * Date:    2017-06-09
+ * Version: 0.3
  * Notes:
  *
  */
 
 #include <tcl.h>
 #include <windows.h>
+#include <conio.h>
 #include <string.h>
 #include "Consio.h"
 
@@ -62,6 +63,8 @@ int Consio_Init(Tcl_Interp *interp) {
     Tcl_CreateObjCommand(interp, "Consio::cgets", cmd_cgets, NULL, NULL);
     Tcl_CreateObjCommand(interp, "Consio::cgetse", cmd_cgetse, NULL, NULL);
     Tcl_CreateObjCommand(interp, "Consio::getchex", cmd_getchex, NULL, NULL);
+    Tcl_CreateObjCommand(interp, "Consio::getkeystate", cmd_getkeystate, NULL, NULL);
+    Tcl_CreateObjCommand(interp, "Consio::getch2", cmd_getch2, NULL, NULL);
 
     hStdin = GetStdHandle(STD_INPUT_HANDLE);
     hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -916,6 +919,106 @@ static int cmd_getchex(ClientData clientData,
     code = buffer[0].Event.KeyEvent.wVirtualKeyCode;
     obj_str = Tcl_NewIntObj(code);
     Tcl_SetObjResult(interp, obj_str);
+
+    return TCL_OK;
+}
+
+/*****************************************************************************
+ * Consio::getkeystate
+ *
+ * Description:
+ *
+ * See GetAsyncKeyState from MSDN:
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/ms646293(v=vs.85).aspx
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
+ *
+ * This command calls the following Windows API functions:
+ *
+ *   - GetAsyncKeyState
+ *
+ * Parameters:
+ *
+ *   id - virtual-key code
+ *
+ * Results:
+ *
+ * Returns key state. The most significant bit tells if the key is up (bit not
+ * set) or down (sit set). The lease significant bit tells, if the key was
+ * pressed after previous call of getkeystate.
+ *
+ * Side effects:
+ *
+ *   None.
+ *****************************************************************************/
+
+static int cmd_getkeystate(ClientData clientData,
+                           Tcl_Interp *interp,
+                           int objc,
+                           Tcl_Obj * CONST objv[]) {
+    int id;
+    int state;
+    Tcl_Obj *obj_int;
+
+    if (objc < 2) {
+        Tcl_WrongNumArgs(interp, 1, objv, "id");
+        return TCL_ERROR;
+    }
+
+    if (Tcl_GetIntFromObj(interp, objv[1], &id) == TCL_OK) {
+        state = GetAsyncKeyState(id);
+    }
+    else {
+        return TCL_ERROR;
+    }
+
+    obj_int = Tcl_NewIntObj(state);
+    Tcl_SetObjResult(interp, obj_int);
+
+    return TCL_OK;
+}
+
+/*****************************************************************************
+ * Consio::getch2
+ *
+ * Description:
+ *
+ *   Waits for a keypress. Doesn't echo it to the console.
+ *   This is based on MSVCRT implementation. See more information here:
+ *   https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch
+ *
+ * This command calls the following Windows API functions:
+ *
+ *   - _getch
+ *
+ * Parameters:
+ *
+ *   None.
+ *
+ * Results:
+ *
+ *   Returns the first character from the input buffer. If the value is larger
+ *   than 255, then the key was a special key (arrow, function key, etc.)
+ *
+ * Side effects:
+ *
+ *
+ *
+ *****************************************************************************/
+
+static int cmd_getch2(ClientData clientData,
+                      Tcl_Interp *interp,
+                      int objc,
+                      Tcl_Obj * CONST objv[]) {
+    int key;
+    Tcl_Obj *obj_int;
+
+    key = _getch();
+    if (key == 0 || key == 0xE0) {
+        key = _getch() + 0x100;
+    }
+
+    obj_int = Tcl_NewIntObj(key);
+    Tcl_SetObjResult(interp, obj_int);
 
     return TCL_OK;
 }
