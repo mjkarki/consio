@@ -1,15 +1,15 @@
 /*
  * Title:   Consio - Windows console library
- * Author:  Matti J. Kärki
- * Date:    2005-10-12
- * Version: 0.2
+ * Author:  Matti J. KÃ¤rki
+ * Date:    2017-06-09
+ * Version: 0.3
  * Notes:
  */
 
 #ifndef __Consio_H__
 #define __Consio_H__
 
-#define ABOUT_STRING "Consio 0.2 Copyright 2005 Matti J. Kärki <mjk@iki.fi>"
+#define ABOUT_STRING "Consio 0.3 Copyright 2005-2017 Matti J. Karki <mjk@iki.fi>"
 
 /* Color numbers */
 
@@ -86,5 +86,6 @@ static int cmd_cputs(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Ob
 static int cmd_cgets(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj * CONST objv[]);
 static int cmd_cgetse(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj * CONST objv[]);
 static int cmd_getchex(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj * CONST objv[]);
-
+static int cmd_getkeystate(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj * CONST objv[]);
+static int cmd_getch2(ClientData clientData, Tcl_Interp *interp, int objc, Tcl_Obj * CONST objv[]);
 #endif /*__Consio_H__*/
