@@ -1,10 +1,16 @@
 # consio
 Consio is a console library for Tcl/Tk implementing some basic functionality for making console applications under Windows.
 
+
+
 ### Latest Binaries
 
 * [Consio version 0.2 for Tcl/Tk 8.4](https://github.com/mattijk/consio/releases/download/0.2/Consio.zip)
+* [Consio version 0.3 for Tcl/tk 8.5 and 8.6](https://github.com/mattijk/consio/releases/download/0.3/Consio.zip)
 
+Version 0.2 is the original release from 2005, which supports only 32-bit version of Tcl 8.4.
+
+Version 0.3 supports Tcl versions 8.5 and 8.6 (both 32-bit and 64-bit runtimes).
 
 #### INFORMATION
 
@@ -16,28 +22,25 @@ This library has been tested only under Windows XP.
 
 #### LICENSE & CONTACT
 
-Copyright 2005 Matti J. Kärki <mjk@iki.fi>
+Copyright 2005-2017 Matti J. Kärki <mjk@iki.fi>
 
 The license is a BSD License and it has been copied from
 http://www.opensource.org/licenses/bsd-license.php
 
-All bug reports and suggestions can be sent to the author via e-mail:
-<mjk@iki.fi>.
-
-The current version is 0.2.
+The current version is 0.3.
 
 
 #### INSTALLATION
 
-The Consio archive has a compiled version of the library available, so you
+The Consio archive has a compiled versions of the library available, so you
 don't need to compile anything. However, if you want to compile the library
 yourself, there is a Makefile, which has all required information available
 for compiling the library under Cygwin. Note, that even though the library
 has been compiled using Cygwin tools, it is using MinGW libraries and header
 files, so there are no Cygwin-specific dependencies in the library. You will
-also need the libtclstub84.a library from MinGW of Cygwin compiled Tcl
-distribution (or you can get one from ActiveState Tcl distribution and
-rename the tclstub84.lib to libtclstub84.a).
+also need the libtclstub85.a or libtclstub86.a library from MinGW of Cygwin
+compiled Tcl distribution (or you can get one from ActiveState Tcl
+distribution and rename the tclstub8X.lib to libtclstub8X.a).
 
 To install this package, just copy the Consio directory and all files under it
 to the "lib" directory of your Tcl installation, so the end result should be
@@ -52,6 +55,9 @@ something like this:
    .
   And so on
 ```
+Just remember to copy a correct version of the Consio.dll to the ..\lib\Consio
+folder.
+
 
 #### USAGE
 
@@ -143,3 +149,17 @@ The library includes the following functions:
   an integer value. This way it's possible to receive a code from all
   keys, including shifts, function keys, arrows etc. The code is
   device-independent and defined by Windows.
+
+`Consio::getkeystate`
+
+  See GetAsyncKeyState from MSDN:
+  https://msdn.microsoft.com/en-us/library/windows/desktop/ms646293(v=vs.85).aspx
+  https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
+ 
+`Consio::getch2`
+ 
+   Waits for a keypress. Doesn't echo it to the console. This is a replacement
+   for Consio::getch function.
+   
+   This is based on MSVCRT implementation. See more information here:
+   https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/getch-getwch
