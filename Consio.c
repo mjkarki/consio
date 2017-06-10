@@ -42,7 +42,7 @@ int Consio_Init(Tcl_Interp *interp) {
     char *error_message_text = "Can't get standard input or output handle.";
 
 #ifdef USE_TCL_STUBS
-    if (Tcl_InitStubs(interp, "8.4", 0) == NULL) {
+    if (Tcl_InitStubs(interp, TCLVERSION, 0) == NULL) {
         return TCL_ERROR;
     }
 #endif /*USE_TCL_STUBS*/
