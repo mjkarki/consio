@@ -25,7 +25,7 @@ This library has been tested only under Windows XP.
 Copyright 2005-2017 Matti J. Kärki <mjk@iki.fi>
 
 The license is a BSD License and it has been copied from
-http://www.opensource.org/licenses/bsd-license.php
+https://opensource.org/licenses/BSD-3-Clause
 
 The current version is 0.3.
 
